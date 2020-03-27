@@ -30,25 +30,6 @@ def listGenerator():
     return unsorted_list
     
 
-def selectionSort():
-
-        #list variables
-        input_list = [5, 1, 11, 4, 3, 10, 8, 4, 11, 9]
-        
-
-        #test print
-        print("The list " + str(input_list))
-
-        #sorting logic
-        for u in range(0, len(input_list) - 1):
-            smallest = u
-            for j in range(u + 1, len(input_list)):
-                if input_list[j] < input_list[smallest]:
-                    smallest = j
-            input_list[u], input_list[smallest] = input_list[smallest], input_list[u]
-
-        print("using selection sort is:\n " + str(input_list) )
-
 #Class definitions
 class Sort:
     #no attributes?
@@ -133,6 +114,7 @@ def main():
     stop = timeit.default_timer()
     print('Time: ', stop - start)
 
+    #merge sort with timer
     #sorter1.MergeSort(test_list)
 
 main()
