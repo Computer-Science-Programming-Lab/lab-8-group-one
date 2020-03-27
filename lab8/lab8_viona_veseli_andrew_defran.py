@@ -87,14 +87,12 @@ class Sort:
                 greater.append(input_list[i])
             else:
                 equals.append(input_list[i])
-        
-        print(lesser, equals, greater)
 
         #use recursion to sort the smaller lists
         if len(lesser) > 1:
-            lesser = quickSort(lesser)
+            lesser = self.quickSort(lesser)
         if len(greater) > 1:
-            greater = quickSort(greater)
+            greater = self.quickSort(greater)
 
         #concatenate the sorted lists
         sortedlist = lesser + equals + greater
