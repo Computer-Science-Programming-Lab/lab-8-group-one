@@ -6,6 +6,7 @@
 #import statements
 import math
 import random
+import timeit
  
 #global variables
 
@@ -94,10 +95,9 @@ class Sort:
         if len(greater) > 1:
             greater = self.quickSort(greater)
 
-        #concatenate the sorted lists
+        #concatenate the sorted lists and return result
         sortedlist = lesser + equals + greater
 
-        print("\nUsing Quick sort is:\n " + str(sortedlist) )
         return sortedlist
 
     #MergeSort
@@ -119,8 +119,20 @@ def main():
     #test case using list generator function
     #print
     print("The list " + str(test_list))
-    #sorter1.selectionSort(test_list)
-    sorter1.quickSort(test_list)
+
+    #selection sort with time
+    start = timeit.default_timer()
+    sorter1.selectionSort(test_list)
+    stop = timeit.default_timer()
+    print('Time: ', stop - start) 
+
+    #quick sort with timer
+    print("\nUsing Quick sort is: " )
+    start = timeit.default_timer()
+    print(sorter1.quickSort(test_list))
+    stop = timeit.default_timer()
+    print('Time: ', stop - start)
+
     #sorter1.MergeSort(test_list)
 
 main()
