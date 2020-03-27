@@ -69,27 +69,50 @@ class Sort:
             input_list[l], input_list[smallest] = input_list[smallest], input_list[l]
 
         print("\nUsing selection sort is:\n " + str(input_list) )
-        
-
-    #QuickSort
-    def quick(self, input_list):
         return 0
+        
+    #QuickSort ie divide and conquer
+    def quickSort(self, input_list):
+        #define the pivot and empty list variables
+        pivot = len(input_list) // 2
+        lesser = []
+        equals = []
+        greater = []
+
+        #separate the values against the pivot into their buckets
+        for i in range(len(input_list)):
+            if input_list[i] < input_list[pivot]:
+                lesser.append(input_list[i])
+            elif input_list[i] > input_list[pivot]:
+                greater.append(input_list[i])
+            else:
+                equals.append(input_list[i])
+        
+        print(lesser, equals, greater)
+
+        #use recursion to sort the smaller lists
+        if len(lesser) > 1:
+            lesser = quickSort(lesser)
+        if len(greater) > 1:
+            greater = quickSort(greater)
+
+        #concatenate the sorted lists
+        sortedlist = lesser + equals + greater
+
+        print("\nUsing Quick sort is:\n " + str(sortedlist) )
+        return sortedlist
 
     #MergeSort
-    def merge(self, input_list):
-        return 0
+    def mergeSort(self, input_list):
+
+        print("\nUsing Merge sort is:\n " + str(input_list) )
 
     pass
-
 
 #main
 def main():
     #welcome
     welcome()
-
-    #test print
-    #print(listGenerator())
-    
 
     #instantiate class object
     sorter1 = Sort()
@@ -98,7 +121,9 @@ def main():
     #test case using list generator function
     #print
     print("The list " + str(test_list))
-    sorter1.selectionSort(test_list)
+    #sorter1.selectionSort(test_list)
+    sorter1.quickSort(test_list)
+    #sorter1.MergeSort(test_list)
 
 main()
 #end program
