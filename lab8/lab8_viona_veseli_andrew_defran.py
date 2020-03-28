@@ -83,7 +83,7 @@ def SelectAlgorithm():
             #   Record result
             test = { 
             "algorithm": "Selection Sort",
-            "test":i,
+            "test":i+1,
             "length":L,
             "elapsed":(t2-t1) 
             }
@@ -99,7 +99,7 @@ def SelectAlgorithm():
 
     #   Option two is quicksort
     elif selection == '2':
-        for i in range(1,N):
+        for i in range(0,N):
 
             t1 = perf_counter()
             sorting.quickSort(test_list)
@@ -108,7 +108,7 @@ def SelectAlgorithm():
             #   Record result
             test = { 
             "algorithm": "QuickSort",
-            "test":i,
+            "test":i+1,
             "length":L,
             "elapsed":(t2-t1) 
             }
@@ -132,7 +132,7 @@ def SelectAlgorithm():
             #   Record result
             test = { 
             "algorithm": "MergeSort",
-            "test":i,
+            "test":i+1,
             "length":L,
             "elapsed":(t2-t1) 
             }
