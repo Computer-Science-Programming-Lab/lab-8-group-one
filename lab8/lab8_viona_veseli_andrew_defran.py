@@ -7,6 +7,10 @@
 import math
 import random
 import timeit
+from time import perf_counter
+
+import sys
+sys.setrecursionlimit(3000)
  
 #global variables
 
@@ -16,7 +20,7 @@ def welcome():
     print("\nHello and welcome to our lab app!\n")
 
 #generate a list of psuedo-random numbers
-def listGenerator():
+def listGenerator(des_length):
 
     #1-10,100,1000,10000,100000. start with 1-10 and build in function to make
     #other sizes
@@ -24,11 +28,136 @@ def listGenerator():
     unsorted_list = []
 
     #loop through list and append a random in in the range.
-    for i in range(1, 11):
+    for i in range(1, des_length):
         unsorted_list.append(random.randint(1, n))
 
     return unsorted_list
     
+
+
+
+#   Select an algorithm
+#   Params: test list, length, number of repititions
+def SelectAlgorithm():
+
+    #   Prompt the user and execute sort on arg test_list
+    #   Return time to complete
+
+    algoOptions = '''
+        The options are as follows: \n
+        1: Selection Sort \n
+        2: Quicksort \n
+        3: Merge Sort \n\n
+    '''
+
+
+    #   Present and get option of algorithm from user
+    print(algoOptions)
+    selection = input('Please select an option:')    
+
+    #   Get desired length of list
+    L = int( input("What size (random) list would you like to test with?") )
+
+    #   Generate the random list
+    test_list = listGenerator(L)
+    
+    #   Get number of test runs
+    N = int(input('How many times would you like to run test? '))
+
+    #   Instantiate sorting class object
+    sorting = Sort()
+
+    #   Instantiate list of test results
+    tests = list()
+
+
+
+    #   Option one is selection sort
+    if selection == '1':
+        for i in range(1,N):
+
+            t1 = perf_counter()
+            sorting.selectionSort(test_list)
+            t2 = perf_counter()
+
+            #   Record result
+            test = { 
+            "algorithm": "Selection Sort",
+            "test":i,
+            "length":L,
+            "elapsed":(t2-t1) 
+            }
+
+            #   Append result
+            tests.append(test)
+
+            #   Shuffle the list
+            random.shuffle(test_list)
+
+        return tests
+    
+
+    #   Option two is quicksort
+    elif selection == '2':
+        for i in range(1,N):
+
+            t1 = perf_counter()
+            sorting.quickSort(test_list)
+            t2 = perf_counter()
+
+            #   Record result
+            test = { 
+            "algorithm": "QuickSort",
+            "test":i,
+            "length":L,
+            "elapsed":(t2-t1) 
+            }
+
+            #   Append result
+            tests.append(test)
+
+            #   Shuffle the list
+            random.shuffle(test_list)
+
+        return tests
+
+
+    #   Option three is merge sort
+    elif selection == '3':
+        for i in range(1,N):
+            print('final:')
+            t1 = perf_counter()
+            print(sorting.mergeSort(test_list))
+            t2 = perf_counter()
+            #   Record result
+            test = { 
+            "algorithm": "MergeSort",
+            "test":i,
+            "length":L,
+            "elapsed":(t2-t1) 
+            }
+
+            #   Append result
+            tests.append(test)
+            
+            #   Shuffle the list
+            random.shuffle(test_list)
+
+        return tests
+
+
+    #   Catch Error
+    else:
+        print("Error: invalid selection. Try again.")
+        SelectAlgorithm(test_list, description, L, N)
+
+
+
+
+
+
+
+
 
 #Class definitions
 class Sort:
@@ -81,41 +210,76 @@ class Sort:
 
         return sortedlist
 
+
+
+
     #MergeSort
-    def mergeSort(self, input_list):
+    def mergeSort(self, initial):
 
-        print("\nUsing Merge sort is:\n " + str(input_list) )
+        
+        def _merge(A, B):
 
-    pass
+            i_A = 0
+            i_B = 0
+
+            res = list()
+
+            while( ( i_A < len(A) ) and ( i_B < len(B) ) ):
+                #   Compare values, move indexes accordingly until one list is empty
+                if (A[i_A] < B[i_B]): 
+                    res.append( A[i_A] )
+                    i_A += 1
+
+                else: 
+                    res.append( B[i_B] )
+                    i_B += 1
+
+            new_A = [ A[i] for i in range( i_A, len(A) )]
+            new_B = [ B[i] for i in range( i_B, len(B) )]
+
+            if len(new_A) != 0:
+                res.extend(new_A)
+            if len(new_B) != 0:
+                res.extend(new_B)
+
+            return res            
+
+
+        #   Loop, comparing the numbers at respective indices
+        if len(initial) == 1:
+            return initial
+
+        #   Continue to split and recurse
+        else: 
+            
+            #   Middle value
+            M = int( len(initial) / 2)
+            
+            A = initial[:M]
+
+            B = initial[(len(initial) - M):]
+
+            return _merge( self.mergeSort( A ), self.mergeSort( B ) )
+
+        #   Loop, splitting until working with arrays of size 1
+
+
+
+
 
 #main
 def main():
+
+
+
     #welcome
     welcome()
 
-    #instantiate class object
-    sorter1 = Sort()
-    test_list = listGenerator()
 
-    #test case using list generator function
-    #print
-    print("The list " + str(test_list))
 
-    #selection sort with time
-    start = timeit.default_timer()
-    sorter1.selectionSort(test_list)
-    stop = timeit.default_timer()
-    print('Time: ', stop - start) 
 
-    #quick sort with timer
-    print("\nUsing Quick sort is: " )
-    start = timeit.default_timer()
-    print(sorter1.quickSort(test_list))
-    stop = timeit.default_timer()
-    print('Time: ', stop - start)
+    print(*SelectAlgorithm(), sep='\n')
 
-    #merge sort with timer
-    #sorter1.MergeSort(test_list)
 
 main()
 #end program
